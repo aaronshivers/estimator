@@ -4,36 +4,36 @@
 
   <h1 class="text-center">Settings</h1>
 
-  <form class="form" action="/calculator" method="POST">
+  <form class="form" action="/settings?_method=PATCH" method="POST">
     
     <div class="form-group">
       <label for="totalOperatingExpenses">Total Operating Expenses</label>
-      <input class="form-control" type="number" name="totalOperatingExpenses" placeholder="Enter Total Operating Expenses..." required>
+      <input class="form-control" type="number" name="totalOperatingExpenses" placeholder="Enter Total Operating Expenses..." value="<%= user.settings.totalOperatingExpenses %>" min="0" step="1" required>
     </div>
 
     <div class="form-group">
       <label for="payrollTaxExpenses">Payroll Tax Expenses</label>
-      <input class="form-control" type="number" name="payrollTaxExpenses" placeholder="Enter Payroll Tax Expenses..." required>
+      <input class="form-control" type="number" name="payrollTaxExpenses" placeholder="Enter Payroll Tax Expenses..." value="<%= user.settings.payrollTaxExpenses %>" min="0" step="1" required>
     </div>
 
     <div class="form-group">
       <label for="wagesAndSalaries">Wages And Salaries</label>
-      <input class="form-control" type="number" name="wagesAndSalaries" placeholder="Enter Wages And Salaries..." required>
+      <input class="form-control" type="number" name="wagesAndSalaries" placeholder="Enter Wages And Salaries..." value="<%= user.settings.wagesAndSalaries %>" min="0" step="1" required>
     </div>
 
     <div class="form-group">
       <label for="totalCostOfGoodsSold">Total Cost Of Goods Sold</label>
-      <input class="form-control" type="number" name="totalCostOfGoodsSold" placeholder="Enter Total Cost Of Goods Sold..." required>
+      <input class="form-control" type="number" name="totalCostOfGoodsSold" placeholder="Enter Total Cost Of Goods Sold..." value="<%= user.settings.totalCostOfGoodsSold %>" min="0" step="1" required>
     </div>
 
     <div class="form-group">
       <label for="employeeHourlyRate">Employee Hourly Rate</label>
-      <input class="form-control" type="number" name="employeeHourlyRate" placeholder="Enter Employee Hourly Rate..." required>
+      <input class="form-control" type="number" name="employeeHourlyRate" placeholder="Enter Employee Hourly Rate..." value="<%= user.settings.employeeHourlyRate %>" min="0" step="1" required>
     </div>
 
     <div class="form-group">
       <label for="desiredPreTaxNetProfitMargin">Desired Pre Tax Net Profit Margin</label>
-      <input class="form-control" type="number" name="desiredPreTaxNetProfitMargin" placeholder="Enter Desired Pre Tax Net Profit Margin..." required>
+      <input class="form-control" type="number" name="desiredPreTaxNetProfitMargin" placeholder="Enter Desired Pre Tax Net Profit Margin..." value="<%= user.settings.desiredPreTaxNetProfitMargin %>" min="0" step=".01" required>
     </div>
 
     <button class="btn btn-lg btn-outline-primary btn-block">Update Settings</button>
