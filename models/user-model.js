@@ -26,14 +26,17 @@ const userSchema = new Schema({
     minlength: 8,
     maxlength: 100
   },
-  admin: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
   signupDate: {
     type: Date,
     default: Date.now()
+  },
+  settings: {
+    totalOperatingExpenses: { type: Number, default: 87084 },
+    payrollTaxExpenses: { type: Number, default: 98335 },
+    wagesAndSalaries: { type: Number, default: 16453 },
+    totalCostOfGoodsSold: { type: Number, default: 66400 },
+    employeeHourlyRate: { type: Number, default: 36 },
+    desiredPreTaxNetProfitMargin: { type: Number, default: 0.2 }
   }
 })
 
