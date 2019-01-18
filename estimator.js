@@ -10,6 +10,7 @@ const app = express()
 const { PORT } = process.env
 
 const userRoutes = require('./routes/user-routes')
+const calculatorRoutes = require('./routes/calculator-routes')
 
 app.set('view engine', 'ejs')
 
@@ -20,6 +21,7 @@ app.use(express.static('public'))
 app.use(methodOverride('_method'))
 
 app.use(userRoutes)
+app.use(calculatorRoutes)
 
 app.get('/', (req, res) => res.render('home'))
 

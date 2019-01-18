@@ -1,0 +1,44 @@
+<% include partials/top %>
+
+<div class="container mt-5">
+
+  <h2 class="text-center">Job Price Calculator</h2>
+  <label for="hoursWorkedOrEstimatedForJob">Hours Worked or Estimated for Job</label>
+  <div class="input-group mb-3">
+    <input type="number" class="form-control" id="hoursWorkedOrEstimatedForJob" placeholder="Hours Worked or Estimated for Job..." min="0" step=".25" autofocus>
+  </div>
+  <label for="partsAndMaterials1">Parts and Materials</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">$</span>
+    </div>
+    <input type="number" class="form-control" id="partsAndMaterials1" placeholder="Parts and Materials..." min="0" step=".01">
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">$</span>
+    </div>
+    <input type="number" class="form-control" id="partsAndMaterials2" placeholder="Parts and Materials..." min="0" step=".01">
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">$</span>
+    </div>
+    <input type="number" class="form-control" id="partsAndMaterials3" placeholder="Parts and Materials..." min="0" step=".01">
+  </div>
+  <label for="salePriceToCustomer">Sale Price to Customer</label>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">$</span>
+    </div>
+    <input type="number" class="form-control" id="salePriceToCustomer" placeholder="Sale Price to Customer..." disabled>
+  </div>
+  <button id="button" type="button" class="btn btn-lg btn-block btn-outline-primary mb-3">Get Sale Price</button>
+  <a href="/" class="btn btn-primary btn-lg btn-block btn-outline-secondary">Home</a>
+
+</div>
+
+<!-- Local Javascript -->
+<script src="calculator.js"></script>
+
+<% include partials/bottom %>
