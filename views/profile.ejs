@@ -1,0 +1,43 @@
+<% include partials/top %>
+
+<div id="homeContainer" class="container mt-5">
+
+  <h1 class="text-center">Profile</h1>
+
+  <img class="w-25 rounded-circle mx-auto d-block" src="<%= user.avatar %>">
+
+  <table class="table mt-3">
+    
+    <thead class="table-dark">
+      
+      <tr>
+        
+        <th></th>
+        <th></th>
+
+      </tr>
+
+    </thead>
+
+    <tbody>
+      
+      <tr>
+        
+        <th>Email</th>
+        <th><%= user.email %></th>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+  <a class="btn btn-lg btn-lg btn-outline-primary btn-block" href="/users/edit">Edit User</a>
+
+  <a class="btn btn-lg btn-lg btn-outline-primary btn-block" href="/settings">Edit Settings</a>
+
+  </div>
+
+</div>
+
+<% include partials/bottom %>

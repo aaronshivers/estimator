@@ -1,0 +1,37 @@
+{
+  "name": "estimator",
+  "version": "1.0.0",
+  "description": "job cost estimator",
+  "main": "estimator.js",
+  "scripts": {
+    "start": "node estimator.js",
+    "test": "mocha --t 5000 tests/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aaronshivers/estimator.git"
+  },
+  "author": "aaron shivers",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/aaronshivers/estimator/issues"
+  },
+  "homepage": "https://github.com/aaronshivers/estimator#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.3",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "helmet": "^3.15.0",
+    "jsonwebtoken": "^8.4.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.4.5",
+    "validator": "^10.11.0"
+  },
+  "devDependencies": {
+    "dotenv": "^6.2.0",
+    "expect": "^23.6.0",
+    "mocha": "^5.2.0",
+    "supertest": "^3.4.1"
+  }
+}
