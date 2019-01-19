@@ -32,7 +32,7 @@ const userSchema = new Schema({
   },
   settings: {
     totalOperatingExpenses: { type: Number, default: 87084 },
-    payrollTaxExpenses: { type: Number, default: 98335 },
+    payrollTaxExpenses: { type: Number, default: 9835 },
     wagesAndSalaries: { type: Number, default: 16453 },
     totalCostOfGoodsSold: { type: Number, default: 66400 },
     employeeHourlyRate: { type: Number, default: 36 },
