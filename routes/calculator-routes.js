@@ -39,7 +39,7 @@ router.get('/settings', authenticateUser, (req, res) => {
   })
 })
 
-// PATCH /users/:id
+// PATCH /settings
 router.patch('/settings', authenticateUser, (req, res) => {
   const { token } = req.cookies
   const {
@@ -67,6 +67,10 @@ router.patch('/settings', authenticateUser, (req, res) => {
       res.status(302).redirect('/calculator')
     })
   })
+})
+
+router.get('/info', (req, res) => {
+  res.render('info')
 })
 
 module.exports = router
