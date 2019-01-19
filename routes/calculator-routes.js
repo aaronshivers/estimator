@@ -4,15 +4,25 @@ const router = express.Router()
 const User = require('../models/user-model')
 const authenticateUser = require('../middleware/authenticate-user')
 const { verifyToken } = require('../middleware/handle-tokens')
+const calculatePrice = require('../middleware/calculate-price')
 
 // GET /calculator
 router.get('/calculator', authenticateUser, (req, res) => {
   const { token } = req.cookies
+  const parameters = {
+    hoursWorkedOrEstimatedForJob,
+    partsAndMaterials1,
+    partsAndMaterials2,
+    partsAndMaterials3
+  } = req.query
 
   verifyToken(token).then((id) => {
     User.findById(id).then((user) => {
-      res.render('calculator', {
-        fart: user.settings.employeeHourlyRate
+      calculatePrice(user, parameters).then((salePriceToCustomer) => {
+        res.render('calculator', {
+          salePriceToCustomer,
+          parameters
+        })
       })
     })
   })
