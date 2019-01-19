@@ -11,6 +11,17 @@ const { createToken, verifyToken } = require('../middleware/handle-tokens')
 const cookieExpiration = { expires: new Date(Date.now() + 86400000) }
 const saltRounds = 10
 
+// GET /
+router.get('/', (req, res) => {
+  const { token } = req.cookies
+  if (token) {
+    res.redirect('/calculator')
+  } else {
+    res.render('home')
+  }
+})
+
+
 // POST /users
 router.post('/users', (req, res) => {
   const email = req.body.email
@@ -30,7 +41,7 @@ router.post('/users', (req, res) => {
         res
           .cookie('token', token, cookieExpiration)
           .status(201)
-          .redirect(`/profile`)
+          .redirect(`/calculator`)
       })
     }).catch(err => res.status(400).send(err.message))
   }).catch(err => res.status(400).render('error', {
@@ -84,7 +95,7 @@ router.post('/login', (req, res) => {
             res
               .cookie('token', token, cookieExpiration)
               .status(200)
-              .redirect(`/profile`)
+              .redirect(`/calculator`)
           })
         } else {
           res.status(401).render('error', {
