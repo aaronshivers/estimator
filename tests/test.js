@@ -544,3 +544,175 @@ describe('GET /settings', () => {
       .end(done)
   })
 })
+
+// PATCH /settings
+describe('PATCH /settings', () => {
+  
+  // it('should return 302, and update the specified settings, if logged in and user is creator', (done) => {
+  //   const { _id } = users[0]
+  //   const { email, password } = users[2]
+  //   const cookie = `token=${tokens[0]}`
+
+  //   request(app)
+  //     .patch(`/users/${ _id }`)
+  //     .set('Cookie', cookie)
+  //     .send(`email=${email}`)
+  //     .send(`password=${password}`)
+  //     .expect(302)
+  //     .expect((res) => {
+  //       expect(res.header.location).toEqual('/profile')
+  //     })
+  //     .end((err) => {
+  //       if (err) return done(err)
+
+  //       User.findById(_id).then((user) => {
+  //         expect(user).toBeTruthy()
+  //         expect(user._id).toEqual(_id)
+  //         expect(user.email).toEqual(email.toLowerCase())
+  //         expect(user.password).not.toEqual(password)
+  //         done()
+  //       }).catch(err => done(err))
+  //     })
+  // })
+
+  // it('should return 401, and NOT update the specified user, if user is logged in, but NOT creator', (done) => {
+  //   const { _id } = users[1]
+  //   const { email, password } = users[2]
+  //   const cookie = `token=${tokens[0]}`
+
+  //   request(app)
+  //     .patch(`/users/${ _id }`)
+  //     .set('Cookie', cookie)
+  //     .send(`email=${email}`)
+  //     .send(`password=${password}`)
+  //     .expect(401)
+  //     .end((err) => {
+  //       if (err) return done(err)
+
+  //       User.findById(_id).then((user) => {
+  //         expect(user).toBeTruthy()
+  //         expect(user._id).toEqual(_id)
+  //         expect(user.email).not.toEqual(email.toLowerCase())
+  //         done()
+  //       }).catch(err => done(err))
+  //     })
+  // })
+
+  // it('should return 404, if specified user is NOT found', (done) => {
+  //   const { _id } = new ObjectId()
+  //   const { email, password } = users[2]
+  //   const cookie = `token=${tokens[0]}`
+
+  //   request(app)
+  //     .patch(`/users/${ _id }`)
+  //     .set('Cookie', cookie)
+  //     .send(`email=${email}`)
+  //     .send(`password=${password}`)
+  //     .expect(404)
+  //     .end((err) => {
+  //       if (err) return done(err)
+
+  //       User.findById(_id).then((user) => {
+  //         expect(user).toBeFalsy()
+  //         done()
+  //       }).catch(err => done(err))
+  //     })
+  // })
+
+  // it('should return 400, and NOT update if user already exists', (done) => {
+  //   const { _id } = users[0]
+  //   const { email, password } = users[1]
+  //   const cookie = `token=${tokens[0]}`
+
+  //   request(app)
+  //     .patch(`/users/${ _id }`)
+  //     .set('Cookie', cookie)
+  //     .send(`email=${email}`)
+  //     .send(`password=${password}`)
+  //     .expect(400)
+  //     .end((err) => {
+  //       if (err) return done(err)
+
+  //       User.findById(_id).then((user) => {
+  //         expect(user._id).toEqual(_id)
+  //         expect(user.email).not.toEqual(email)
+  //         done()
+  //       }).catch(err => done(err))
+  //     })
+  // })
+
+  // it('should return 400, and NOT update a user with an invalid email', (done) => {
+  //   const { _id } = users[0]
+  //   const { email, password } = users[3]
+  //   const cookie = `token=${tokens[0]}`
+
+  //   request(app)
+  //     .patch(`/users/${ _id }`)
+  //     .set('Cookie', cookie)
+  //     .send(`email=${email}`)
+  //     .send(`password=${password}`)
+  //     .expect(400)
+  //     .end((err) => {
+  //       if (err) return done(err)
+
+  //       User.findById(_id).then((user) => {
+  //         expect(user._id).toEqual(_id)
+  //         expect(user.email).not.toEqual(email)
+  //         done()
+  //       }).catch(err => done(err))
+  //     })
+  // })
+
+  // it('should return 402, and NOT update a user with an invalid password', (done) => {
+  //   const { _id } = users[0]
+  //   const { email, password } = users[4]
+  //   const cookie = `token=${tokens[0]}`
+
+  //   request(app)
+  //     .patch(`/users/${ _id }`)
+  //     .set('Cookie', cookie)
+  //     .send(`email=${email}`)
+  //     .send(`password=${password}`)
+  //     .expect(400)
+  //     .end((err) => {
+  //       if (err) return done(err)
+
+  //       User.findById(_id).then((user) => {
+  //         expect(user._id).toEqual(_id)
+  //         expect(user.email).not.toEqual(email)
+  //         done()
+  //       }).catch(err => done(err))
+  //     })
+  // })
+
+  // it('should return 302, and NOT allow user to change Admin field', (done) => {
+  //   const { _id } = users[0]
+  //   const cookie = `token=${tokens[0]}`
+  //   const { email, password } = users[0]
+  //   const { admin } = { 'admin' : true }
+
+  //   request(app)
+  //     .patch(`/users/${ _id }`)
+  //     .set('Cookie', cookie)
+  //     .send(`email=${email}`)
+  //     .send(`password=${password}`)
+  //     .send(`admin=${admin}`)
+  //     .expect(302)
+  //     .expect((res) => {
+  //       expect(res.header.location).toEqual('/profile')
+  //     })
+  //     .end((err) => {
+  //       if (err) return done(err)
+
+  //       User.findById(_id).then((user) => {
+
+  //         expect(user).toBeTruthy()
+  //         expect(user._id).toEqual(_id)
+  //         expect(user.email).toEqual(email.toLowerCase())
+  //         expect(user.password).not.toEqual(password)
+  //         expect(user.admin).not.toEqual(admin)
+  //         done()
+  //       }).catch(err => done(err))
+  //     })
+  // })
+})
