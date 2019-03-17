@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 const User = require('../models/users')
 const validatePassword = require('../middleware/validate-password')
 const authenticateUser = require('../middleware/authenticate-user')
+const auth = require('../middleware/auth')
 const { createToken, verifyToken } = require('../middleware/handle-tokens')
 
 const cookieExpiration = { expires: new Date(Date.now() + 86400000) }
@@ -22,22 +23,24 @@ router.get('/', (req, res) => {
 })
 
 // GET /users/me
-router.get('/users/me', authenticateUser, (req, res) => {
-  const token = req.cookies.token
-  const secret = process.env.JWT_SECRET
-  const decoded = jwt.verify(token, secret)
-  const { _id } = decoded
+router.get('/users/me', auth, async (req, res) => {
 
-  User.findById(_id).then((user) => {
-    if (user) {
-      res.render('profile', { user })
-    } else {
-      res.status(401).render('error', {
-        statusCode: '401',
-        errorMessage: 'Sorry, you must be logged in to view this page.'
-      })
-    }
-  })
+  try {
+
+    // find user by id
+    const user = await User.findById(req.user._id)
+
+    // reject if user is not found
+    if (!user) return res.status(404).render('error', { msg: 'User Not Found' })
+
+    // render profle with user info
+    res.render('profile', { user })
+    
+  } catch (error) {
+
+    // send error message
+    res.render('error', { msg: error.message })
+  }
 })
 
 // POST /users

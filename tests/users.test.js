@@ -28,6 +28,15 @@ describe('/users', () => {
         .expect(401)
     })
 
+    it('should respond with 400 if token is phony', async () => {
+      const cookie = `token=${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'}`
+      
+      await request(app)
+        .get('/users/me')
+        .set('Cookie', cookie)
+        .expect(400)
+    })
+
     it('should respond 200 if user is logged in', async () => {
       
       await request(app)

@@ -10,7 +10,7 @@ const compression = require('compression')
 const app = express()
 const { PORT } = process.env
 
-const userRoutes = require('./routes/user-routes')
+const userRoutes = require('./routes/users')
 const calculatorRoutes = require('./routes/calculator-routes')
 
 app.set('view engine', 'ejs')
