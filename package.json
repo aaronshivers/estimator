@@ -4,8 +4,9 @@
   "description": "job cost estimator",
   "main": "estimator.js",
   "scripts": {
-    "start": "node estimator.js",
-    "test": "mocha --t 5000 tests/test.js"
+    "start": "export NODE_ENV=development && node estimator.js",
+    "test": "export NODE_ENV=test && mocha -t 5000 tests/*.test.js",
+    "test-watch": "nodemon --exec 'npm test'"
   },
   "repository": {
     "type": "git",
