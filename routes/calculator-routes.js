@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const User = require('../models/user-model')
+const User = require('../models/users')
 const authenticateUser = require('../middleware/authenticate-user')
 const { verifyToken } = require('../middleware/handle-tokens')
 const calculatePrice = require('../middleware/calculate-price')
