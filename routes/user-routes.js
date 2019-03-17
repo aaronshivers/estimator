@@ -21,6 +21,24 @@ router.get('/', (req, res) => {
   }
 })
 
+// GET /users/me
+router.get('/users/me', authenticateUser, (req, res) => {
+  const token = req.cookies.token
+  const secret = process.env.JWT_SECRET
+  const decoded = jwt.verify(token, secret)
+  const { _id } = decoded
+
+  User.findById(_id).then((user) => {
+    if (user) {
+      res.render('profile', { user })
+    } else {
+      res.status(401).render('error', {
+        statusCode: '401',
+        errorMessage: 'Sorry, you must be logged in to view this page.'
+      })
+    }
+  })
+})
 
 // POST /users
 router.post('/users', (req, res) => {
@@ -48,25 +66,6 @@ router.post('/users', (req, res) => {
     statusCode: '400',
     errorMessage: err.message
   }))
-})
-
-// GET /profile
-router.get('/profile', authenticateUser, (req, res) => {
-  const token = req.cookies.token
-  const secret = process.env.JWT_SECRET
-  const decoded = jwt.verify(token, secret)
-  const { _id } = decoded
-
-  User.findById(_id).then((user) => {
-    if (user) {
-      res.render('profile', { user })
-    } else {
-      res.status(401).render('error', {
-        statusCode: '401',
-        errorMessage: 'Sorry, you must be logged in to view this page.'
-      })
-    }
-  })
 })
 
 router.get('/users/:id/view', authenticateUser, (req, res) => {
