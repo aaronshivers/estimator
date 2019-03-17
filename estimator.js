@@ -10,6 +10,7 @@ const compression = require('compression')
 const app = express()
 const { PORT } = process.env
 
+const indexRoutes = require('./routes/index')
 const userRoutes = require('./routes/users')
 const calculatorRoutes = require('./routes/calculator-routes')
 
@@ -22,6 +23,7 @@ app.use(cookieParser())
 app.use(express.static('public'))
 app.use(methodOverride('_method'))
 
+app.use(indexRoutes)
 app.use(userRoutes)
 app.use(calculatorRoutes)
 

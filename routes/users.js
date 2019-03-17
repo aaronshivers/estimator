@@ -12,16 +12,6 @@ const { createToken, verifyToken } = require('../middleware/handle-tokens')
 const cookieExpiration = { expires: new Date(Date.now() + 86400000) }
 const saltRounds = 10
 
-// GET /
-router.get('/', (req, res) => {
-  const { token } = req.cookies
-  if (token) {
-    res.redirect('/calculator')
-  } else {
-    res.render('home')
-  }
-})
-
 // GET /users/me
 router.get('/users/me', auth, async (req, res) => {
 
