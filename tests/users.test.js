@@ -131,4 +131,19 @@ describe('/users', () => {
       expect(foundUser.password).not.toEqual(password)
     })
   })
+
+  describe('GET /users/logout', () => {
+
+    it('should respond 200, delete auth token, and redirect to /', async () => {
+
+      await request(app)
+        .get('/users/logout')
+        .set('Cookie', `token=${ token }`)
+        .expect(302)
+        .expect(res => {
+          expect(res.header.location).toEqual('/')
+          expect(res.header['set-cookie']).toEqual(["token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"])
+        })
+    })
+  })
 })

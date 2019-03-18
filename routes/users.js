@@ -88,6 +88,13 @@ router.post('/users', validate(userValidator), async (req, res) => {
   }
 })
 
+// GET /logout
+router.get('/users/logout', (req, res) => {
+
+  // remove auth token and redirect to /
+  res.clearCookie('token').redirect(`/`)
+})
+
 // router.get('/users/:id/view', auth, (req, res) => {
 //   const { id } = req.params
 
@@ -125,11 +132,6 @@ router.post('/users', validate(userValidator), async (req, res) => {
 //     }
 //   }).catch(err => res.status(401)
 //     .send('Please check your login credentials, and try again.'))
-// })
-
-// // GET /logout
-// router.get('/logout', (req, res) => {
-//   res.clearCookie('token').redirect(`/`)
 // })
 
 // // GET /users/:id/edit
