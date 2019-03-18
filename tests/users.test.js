@@ -188,4 +188,30 @@ describe('/users', () => {
         .expect(200)
     })
   })
+
+  describe('DELETE /users/me/delete', () => {
+
+    it('should respond 401 if user is not logged in', async () => {
+
+      await request(app)
+        .delete('/users/me/delete')
+        .expect(401)
+    })
+
+    it('should respond 302, delete user, and redirect to /', async () => {
+      const { email } = users[0]
+
+      await request(app)
+        .delete('/users/me/delete')
+        .set('Cookie', `token=${ token }`)
+        .expect(302)
+        .expect(res => {
+          expect(res.header.location).toEqual('/')
+          expect(res.header['set-cookie']).toEqual(["token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"])
+        })
+
+      const foundUser = await User.findOne({ email })
+      expect(foundUser).toBeFalsy()
+    })
+  })
 })

@@ -152,21 +152,6 @@ router.get('/users/me/edit', auth, async (req, res) => {
     // send error message
     res.render('error', { msg: error.message })
   }
-
-  // const { token } = req.cookies
-
-  // verifyToken(token).then((id) => {
-    // User.findById(id).then((user) => {
-      // if (!user) {
-        // res.status(404).render('error', {
-          // statusCode: '404',
-          // errorMessage: `Sorry, we can't find that user in our database.`
-        // })
-      // } else {
-        
-      // }
-    // })
-  // })
 })
 
 // PATCH /users/:id
@@ -228,23 +213,25 @@ router.patch('/users/:id', auth, (req, res) => {
   })
 })
 
-// DELETE /users/:id
-router.delete('/users/delete', auth, (req, res) => {
-  const { token } = req.cookies
+// DELETE /users/me/delete
+router.delete('/users/me/delete', auth, async (req, res) => {
 
-  verifyToken(token).then((id) => {
-    User.findByIdAndDelete(id).then((user) => {
+  try {
 
-      if (user) {
-        res.clearCookie('token').redirect('/')
-      } else {
-        res.status(404).render('error', {
-          statusCode: '404',
-          errorMessage: 'Sorry, we could not find that user in our database.'
-        })
-      }
-    })
-  })
+    // find user
+    const user = await User.findByIdAndDelete(req.user._id)
+    
+    // reject if user is not in the DB
+    if (!user) return res.status(404).render('error', { msg: 'User Not Found' })
+
+    // delete cookie and redirect to /
+    res.clearCookie('token').redirect('/')
+
+  } catch (error) {
+
+    // send error message
+    res.render('error', { msg: error.message })
+  }
 })
 
 module.exports = router
