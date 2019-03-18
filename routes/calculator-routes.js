@@ -2,12 +2,12 @@ const express = require('express')
 const router = express.Router()
 
 const User = require('../models/users')
-const authenticateUser = require('../middleware/authenticate-user')
+const auth = require('../middleware/auth')
 const { verifyToken } = require('../middleware/handle-tokens')
 const calculatePrice = require('../middleware/calculate-price')
 
 // GET /calculator
-router.get('/calculator', authenticateUser, (req, res) => {
+router.get('/calculator', auth, (req, res) => {
   const { token } = req.cookies
   const parameters = {
     hoursWorkedOrEstimatedForJob,
@@ -29,7 +29,7 @@ router.get('/calculator', authenticateUser, (req, res) => {
 })
 
 // GET /settings
-router.get('/settings', authenticateUser, (req, res) => {
+router.get('/settings', auth, (req, res) => {
   const { token } = req.cookies
 
   verifyToken(token).then((id) => {
@@ -40,7 +40,7 @@ router.get('/settings', authenticateUser, (req, res) => {
 })
 
 // PATCH /settings
-router.patch('/settings', authenticateUser, (req, res) => {
+router.patch('/settings', auth, (req, res) => {
   const { token } = req.cookies
   const {
     totalOperatingExpenses,

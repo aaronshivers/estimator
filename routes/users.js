@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt')
 
 const User = require('../models/users')
 const validatePassword = require('../middleware/validate-password')
-const authenticateUser = require('../middleware/authenticate-user')
 const auth = require('../middleware/auth')
 const { createToken, verifyToken } = require('../middleware/handle-tokens')
 
@@ -83,7 +82,7 @@ router.get('/users/me', auth, async (req, res) => {
 //   }))
 // })
 
-// router.get('/users/:id/view', authenticateUser, (req, res) => {
+// router.get('/users/:id/view', auth, (req, res) => {
 //   const { id } = req.params
 
 //   User.findById(id).then((user) => {
@@ -128,7 +127,7 @@ router.get('/users/me', auth, async (req, res) => {
 // })
 
 // // GET /users/:id/edit
-// router.get('/users/edit', authenticateUser, (req, res) => {
+// router.get('/users/edit', auth, (req, res) => {
 //   const { token } = req.cookies
 
 //   verifyToken(token).then((id) => {
@@ -146,7 +145,7 @@ router.get('/users/me', auth, async (req, res) => {
 // })
 
 // // PATCH /users/:id
-// router.patch('/users/:id', authenticateUser, (req, res) => {
+// router.patch('/users/:id', auth, (req, res) => {
 //   const { token } = req.cookies
 //   const { id } = req.params
 //   const { email, password } = req.body
@@ -205,7 +204,7 @@ router.get('/users/me', auth, async (req, res) => {
 // })
 
 // // DELETE /users/:id
-// router.delete('/users/delete', authenticateUser, (req, res) => {
+// router.delete('/users/delete', auth, (req, res) => {
 //   const { token } = req.cookies
 
 //   verifyToken(token).then((id) => {
