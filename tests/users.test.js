@@ -6,16 +6,25 @@ const User = require('../models/users')
 
 describe('/users', () => {
 
-  const userOne = {
-    email: 'test@example.com',
+  const users = [{
+    email: 'user0@example.com',
     password: 'asdfASDF1234!@#$'
-  }
+  }, {
+    email: 'user1@example.com',
+    password: 'asdfASDF1234!@#$'
+  }, {
+    email: 'user2@example.com',
+    password: 'invalidpass'
+  }, {
+    email: 'invalid.email!com',
+    password: 'asdfASDF1234!@#$'
+  }]
 
   let token
 
   beforeEach(async () => {
     await User.deleteMany()
-    const user = await new User(userOne).save()
+    const user = await new User(users[0]).save()
     token = await user.createAuthToken()
   })
 
@@ -63,6 +72,63 @@ describe('/users', () => {
         .get('/users/me')
         .set('Cookie', `token=${ token }`)
         .expect(200)
+    })
+  })
+
+  describe('POST /users', () => {
+
+    it('should respond 400 if email is invalid', async () => {
+      const { email, password } = users[3]
+
+      await request(app)
+        .post('/users')
+        .send(`email=${ email }`)
+        .send(`password=${ password }`)
+        .expect(400)
+
+      const foundUser = await User.findOne({ email })
+      expect(foundUser).toBeFalsy()
+    })
+
+    it('should respond 400 if password is invalid', async () => {
+      const { email, password } = users[2]
+
+      await request(app)
+        .post('/users')
+        .send(`email=${ email }`)
+        .send(`password=${ password }`)
+        .expect(400)
+
+      const foundUser = await User.findOne({ email })
+      expect(foundUser).toBeFalsy()      
+    })
+
+    it('should respond 400 if email is already registered', async () => {
+      const { email, password } = users[0]
+
+      await request(app)
+        .post('/users')
+        .send(`email=${ email }`)
+        .send(`password=${ password }`)
+        .expect(400)
+
+      const foundUser = await User.findOne({ email })
+      expect(foundUser).toBeTruthy()      
+    })
+
+    it('should respond 201 and save the new user', async () => {
+      const { email, password } = users[1]
+
+      await request(app)
+        .post('/users')
+        .send(`email=${ email }`)
+        .send(`password=${ password }`)
+        .expect(201)
+
+      const foundUser = await User.findOne({ email })
+      expect(foundUser).toBeTruthy()
+      expect(foundUser.email).toEqual(email)
+      expect(foundUser.password).not.toEqual(password)
     })
   })
 })

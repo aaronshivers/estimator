@@ -4,12 +4,13 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 const User = require('../models/users')
-const validatePassword = require('../middleware/validate-password')
+const validate = require('../middleware/validate')
+const userValidator = require('../middleware/userValidator')
 const auth = require('../middleware/auth')
-const { createToken, verifyToken } = require('../middleware/handle-tokens')
+// const { createToken, verifyToken } = require('../middleware/handle-tokens')
 
 const cookieExpiration = { expires: new Date(Date.now() + 86400000) }
-const saltRounds = 10
+// const saltRounds = 10
 
 // GET /signup
 router.get('/users/signup', (req, res) => {
@@ -56,31 +57,36 @@ router.get('/users/me', auth, async (req, res) => {
   }
 })
 
-// // POST /users
-// router.post('/users', (req, res) => {
-//   const email = req.body.email
-//   const password = req.body.password
+// POST /users
+router.post('/users', validate(userValidator), async (req, res) => {
 
-//   if (!password || !email) return res.status(400).render('error', {
-//     msg: 'You must provide an email, and a password.'
-//   })
+  try {
 
-//   validatePassword(password).then((password) => {
-//     const newUser = { email, password }
-//     const user = new User(newUser)
+    // get email and password from the body
+    const { email, password } = req.body
 
-//     user.save().then((user) => {
-//       const token = user.createAuthToken()
-//       res
-//         .cookie('token', token, cookieExpiration)
-//         .status(201)
-//         .redirect(`/calculator`)
-//     }).catch(err => res.status(400).send(err.message))
-//   }).catch(err => res.status(400).render('error', {
-//     statusCode: '400',
-//     errorMessage: err.message
-//   }))
-// })
+    // check db for existing user
+    const existingUser = await User.findOne({ email })
+    if (existingUser) return res.status(400).render('error', { msg: 'User already registered.' })
+
+    // create user
+    const user = await new User({ email, password })
+
+    // save user
+    await user.save()
+
+    // get auth token
+    const token = await user.createAuthToken()
+
+    // set header and return user info
+    res.cookie('token', token, cookieExpiration).status(201).render(`profile`, { user })
+
+  } catch (error) {
+
+    // send error message
+    res.status(400).render('error', { msg: error.message })
+  }
+})
 
 // router.get('/users/:id/view', auth, (req, res) => {
 //   const { id } = req.params
