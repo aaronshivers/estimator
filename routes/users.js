@@ -42,21 +42,6 @@ router.get('/users/login', (req, res) => {
   }
 })
 
-// GET /users/me
-router.get('/users/me', auth, async (req, res) => {
-
-  try {
-
-    // render profle with user info
-    res.render('profile', { user: req.user })
-    
-  } catch (error) {
-
-    // send error message
-    res.render('error', { msg: error.message })
-  }
-})
-
 // POST /users
 router.post('/users', validate(userValidator), async (req, res) => {
 
@@ -88,6 +73,21 @@ router.post('/users', validate(userValidator), async (req, res) => {
   }
 })
 
+// GET /users/me
+router.get('/users/me', auth, async (req, res) => {
+
+  try {
+
+    // render profle with user info
+    res.render('profile', { user: req.user })
+    
+  } catch (error) {
+
+    // send error message
+    res.render('error', { msg: error.message })
+  }
+})
+
 // GET /logout
 router.get('/users/logout', (req, res) => {
 
@@ -104,52 +104,69 @@ router.get('/users/:id/view', auth, (req, res) => {
 })
 
 // POST /login
-router.post('/login', (req, res) => {
-  const { email, password } = req.body
+router.post('/users/login', async (req, res) => {
 
-  User.findOne({ email }).then((user) => {
-    if (user) {
-      bcrypt.compare(password, user.password, (err, hash) => {
-        if (hash) {
-          createToken(user).then((token) => {
-            res
-              .cookie('token', token, cookieExpiration)
-              .status(200)
-              .redirect(`/calculator`)
-          })
-        } else {
-          res.status(401).render('error', {
-            statusCode: '401',
-            errorMessage: 'Please check your login credentials, and try again.'
-          })
-        }
-      })
-    } else {
-      res.status(401).render('error', {
-        statusCode: '401',
-        errorMessage: 'Please check your login credentials, and try again.'
-      })
-    }
-  }).catch(err => res.status(401)
-    .send('Please check your login credentials, and try again.'))
+  try {
+    
+    // get email and password
+    const { email, password } = req.body
+
+    // find user by email
+    const existingUser = await User.findOne({ email })
+
+    // reject if user already exists
+    if (!existingUser) return res.status(401).render('error', { msg: 'User Not Found' })
+
+    // verify user password
+    const hash = await bcrypt.compare(password, user.password)
+
+    // reject if password is incorrect
+    if (!hash) return res.status(401).render('error', { msg: 'Please check your login credentials, and try again.' })
+
+    // get auth token
+    const token = await user.createAuthToken()
+
+    // set cookie and redirect to /calculator
+    res.cookie('token', token, cookieExpiration).redirect(`/calculator`)
+
+  } catch (error) {
+
+    // send error message
+    res.render('error', { msg: error.message })
+  }
 })
 
-// GET /users/:id/edit
-router.get('/users/edit', auth, (req, res) => {
-  const { token } = req.cookies
+// GET /users/me/edit
+router.get('/users/me/edit', auth, async (req, res) => {
 
-  verifyToken(token).then((id) => {
-    User.findById(id).then((user) => {
-      if (!user) {
-        res.status(404).render('error', {
-          statusCode: '404',
-          errorMessage: `Sorry, we can't find that user in our database.`
-        })
-      } else {
-        res.render('edit-user', { user })
-      }
-    })
-  })
+  try {
+
+    // get user data
+    const { user } = req
+
+    // res.send('edit user')
+    res.render('edit-user', { user })
+
+  } catch (error) {
+
+    // send error message
+    res.render('error', { msg: error.message })
+  }
+
+  // const { token } = req.cookies
+
+  // verifyToken(token).then((id) => {
+    // User.findById(id).then((user) => {
+      // if (!user) {
+        // res.status(404).render('error', {
+          // statusCode: '404',
+          // errorMessage: `Sorry, we can't find that user in our database.`
+        // })
+      // } else {
+        
+      // }
+    // })
+  // })
 })
 
 // PATCH /users/:id

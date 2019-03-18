@@ -48,33 +48,6 @@ describe('/users', () => {
     })
   })
 
-  describe('GET /users/me', () => {
-
-    it('should respond 401 if user is NOT logged in', async () => {
-
-      await request(app)
-        .get('/users/me')
-        .expect(401)
-    })
-
-    it('should respond with 400 if token is phony', async () => {
-      const cookie = `token=${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'}`
-      
-      await request(app)
-        .get('/users/me')
-        .set('Cookie', cookie)
-        .expect(400)
-    })
-
-    it('should respond 200 if user is logged in', async () => {
-      
-      await request(app)
-        .get('/users/me')
-        .set('Cookie', `token=${ token }`)
-        .expect(200)
-    })
-  })
-
   describe('POST /users', () => {
 
     it('should respond 400 if email is invalid', async () => {
@@ -132,6 +105,33 @@ describe('/users', () => {
     })
   })
 
+  describe('GET /users/me', () => {
+
+    it('should respond 401 if user is NOT logged in', async () => {
+
+      await request(app)
+        .get('/users/me')
+        .expect(401)
+    })
+
+    it('should respond with 400 if token is phony', async () => {
+      const cookie = `token=${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'}`
+      
+      await request(app)
+        .get('/users/me')
+        .set('Cookie', cookie)
+        .expect(400)
+    })
+
+    it('should respond 200 if user is logged in', async () => {
+      
+      await request(app)
+        .get('/users/me')
+        .set('Cookie', `token=${ token }`)
+        .expect(200)
+    })
+  })
+
   describe('GET /users/logout', () => {
 
     it('should respond 200, delete auth token, and redirect to /', async () => {
@@ -144,6 +144,48 @@ describe('/users', () => {
           expect(res.header.location).toEqual('/')
           expect(res.header['set-cookie']).toEqual(["token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"])
         })
+    })
+  })
+
+  describe('POST /users/login', () => {
+
+    it('should respond 401 if user is not in the DB', async () => {
+      const { email, password } = users[1]
+
+      await request(app)
+        .post('/users/login')
+        .send(`email=${ email }`)
+        .send(`password=${ password }`)
+        .expect(401)
+    })
+
+    it('should respond 200 if user is logged in', async () => {
+      const { email, password } = users[0]
+
+      await request(app)
+        .post('/users/login')
+        .set('Cookie', `token=${ token }`)
+        .send(`email=${ email }`)
+        .send(`password=${ password }`)
+        .expect(200)
+    })
+  })
+
+  describe('GET /users/me/edit', () => {
+
+    it('should respond 401 if user is NOT logged in', async () => {
+
+      await request(app)
+        .get('/users/me/edit')
+        .expect(401)
+    })
+
+    it('should respond 200 if user is logged in', async () => {
+
+      await request(app)
+        .get('/users/me/edit')
+        .set('Cookie', `token=${ token }`)
+        .expect(200)
     })
   })
 })
