@@ -19,6 +19,26 @@ describe('/users', () => {
     token = await user.createAuthToken()
   })
 
+  describe('GET /users/signup', () => {
+
+    it('should respond 200', async () => {
+      
+      await request(app)
+        .get('/users/signup')
+        .expect(200)
+    })
+  })
+
+  describe('GET /users/login', () => {
+
+    it('should respond 200', async () => {
+      
+      await request(app)
+        .get('/users/login')
+        .expect(200)
+    })
+  })
+
   describe('GET /users/me', () => {
 
     it('should respond 401 if user is NOT logged in', async () => {

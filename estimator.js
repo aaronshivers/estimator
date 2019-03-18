@@ -28,17 +28,11 @@ app.use(userRoutes)
 app.use(calculatorRoutes)
 
 app.use((req, res, next) => {
-  res.status(404).render('error', {
-    statusCode: '404',
-    errorMessage: 'Sorry, we cannot find that!'
-  })
+  res.status(404).render('error', { msg: 'Page Not Found' })
 })
 
-app.use((err, req, res, next) => {
-  res.status(500).render('error', {
-    statusCode: '500',
-    errorMessage: err.message
-  })
+app.use((error, req, res, next) => {
+  res.status(500).render('error', { msg: 'Server Error' })
 })
 
 app.listen(PORT, () => console.log(`Server listening on port ${ PORT }.`))
