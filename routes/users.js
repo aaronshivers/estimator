@@ -95,139 +95,139 @@ router.get('/users/logout', (req, res) => {
   res.clearCookie('token').redirect(`/`)
 })
 
-// router.get('/users/:id/view', auth, (req, res) => {
-//   const { id } = req.params
+router.get('/users/:id/view', auth, (req, res) => {
+  const { id } = req.params
 
-//   User.findById(id).then((user) => {
-//     res.render('view-user', { user })
-//   })
-// })
+  User.findById(id).then((user) => {
+    res.render('view-user', { user })
+  })
+})
 
-// // POST /login
-// router.post('/login', (req, res) => {
-//   const { email, password } = req.body
+// POST /login
+router.post('/login', (req, res) => {
+  const { email, password } = req.body
 
-//   User.findOne({ email }).then((user) => {
-//     if (user) {
-//       bcrypt.compare(password, user.password, (err, hash) => {
-//         if (hash) {
-//           createToken(user).then((token) => {
-//             res
-//               .cookie('token', token, cookieExpiration)
-//               .status(200)
-//               .redirect(`/calculator`)
-//           })
-//         } else {
-//           res.status(401).render('error', {
-//             statusCode: '401',
-//             errorMessage: 'Please check your login credentials, and try again.'
-//           })
-//         }
-//       })
-//     } else {
-//       res.status(401).render('error', {
-//         statusCode: '401',
-//         errorMessage: 'Please check your login credentials, and try again.'
-//       })
-//     }
-//   }).catch(err => res.status(401)
-//     .send('Please check your login credentials, and try again.'))
-// })
+  User.findOne({ email }).then((user) => {
+    if (user) {
+      bcrypt.compare(password, user.password, (err, hash) => {
+        if (hash) {
+          createToken(user).then((token) => {
+            res
+              .cookie('token', token, cookieExpiration)
+              .status(200)
+              .redirect(`/calculator`)
+          })
+        } else {
+          res.status(401).render('error', {
+            statusCode: '401',
+            errorMessage: 'Please check your login credentials, and try again.'
+          })
+        }
+      })
+    } else {
+      res.status(401).render('error', {
+        statusCode: '401',
+        errorMessage: 'Please check your login credentials, and try again.'
+      })
+    }
+  }).catch(err => res.status(401)
+    .send('Please check your login credentials, and try again.'))
+})
 
-// // GET /users/:id/edit
-// router.get('/users/edit', auth, (req, res) => {
-//   const { token } = req.cookies
+// GET /users/:id/edit
+router.get('/users/edit', auth, (req, res) => {
+  const { token } = req.cookies
 
-//   verifyToken(token).then((id) => {
-//     User.findById(id).then((user) => {
-//       if (!user) {
-//         res.status(404).render('error', {
-//           statusCode: '404',
-//           errorMessage: `Sorry, we can't find that user in our database.`
-//         })
-//       } else {
-//         res.render('edit-user', { user })
-//       }
-//     })
-//   })
-// })
+  verifyToken(token).then((id) => {
+    User.findById(id).then((user) => {
+      if (!user) {
+        res.status(404).render('error', {
+          statusCode: '404',
+          errorMessage: `Sorry, we can't find that user in our database.`
+        })
+      } else {
+        res.render('edit-user', { user })
+      }
+    })
+  })
+})
 
-// // PATCH /users/:id
-// router.patch('/users/:id', auth, (req, res) => {
-//   const { token } = req.cookies
-//   const { id } = req.params
-//   const { email, password } = req.body
+// PATCH /users/:id
+router.patch('/users/:id', auth, (req, res) => {
+  const { token } = req.cookies
+  const { id } = req.params
+  const { email, password } = req.body
 
-//   User.findById(id).then((user) => {
-//     if (!user) {
-//       res.status(404).render('error', {
-//         statusCode: '404',
-//         errorMessage: 'Sorry, that user was not found in our database.'
-//       })
-//     } else {
+  User.findById(id).then((user) => {
+    if (!user) {
+      res.status(404).render('error', {
+        statusCode: '404',
+        errorMessage: 'Sorry, that user was not found in our database.'
+      })
+    } else {
       
-//       verifyToken(token).then((creator) => {
+      verifyToken(token).then((creator) => {
 
-//         if (creator !== id) {
-//           return res.status(401).render('error', {
-//             statusCode: '401',
-//             errorMessage: `Sorry, it appears that you 
-//             are not the owner of that account.`
-//           })
-//         }
+        if (creator !== id) {
+          return res.status(401).render('error', {
+            statusCode: '401',
+            errorMessage: `Sorry, it appears that you 
+            are not the owner of that account.`
+          })
+        }
 
-//         validatePassword(password).then((password) => {
+        validatePassword(password).then((password) => {
 
-//           bcrypt.hash(password, saltRounds).then((hash) => {
-//             const updatedUser = {
-//               email,
-//               password: hash
-//             }
-//             const options = { runValidators: true }
+          bcrypt.hash(password, saltRounds).then((hash) => {
+            const updatedUser = {
+              email,
+              password: hash
+            }
+            const options = { runValidators: true }
 
-//             User.findByIdAndUpdate(id, updatedUser, options).then((user) => {
+            User.findByIdAndUpdate(id, updatedUser, options).then((user) => {
 
-//               if (user) return res.status(302).redirect('/profile')
+              if (user) return res.status(302).redirect('/profile')
 
-//               res.status(404).render('error', {
-//                 statusCode: '404',
-//                 errorMessage: `Sorry, that user Id 
-//                 was not found in our database.`
-//               })
-//             }).catch(err => res.status(400).render('error', {
-//               statusCode: '400',
-//               errorMessage: `Sorry, that email already exists in our database.`
-//             }))
-//           }).catch(err => res.status(400).render('error', {
-//             statusCode: '400',
-//             errorMessage: err.message
-//           }))
-//         }).catch(err => res.status(400).render('error', {
-//           statusCode: '400',
-//           errorMessage: err.message
-//         }))
-//       })
-//     }
-//   })
-// })
+              res.status(404).render('error', {
+                statusCode: '404',
+                errorMessage: `Sorry, that user Id 
+                was not found in our database.`
+              })
+            }).catch(err => res.status(400).render('error', {
+              statusCode: '400',
+              errorMessage: `Sorry, that email already exists in our database.`
+            }))
+          }).catch(err => res.status(400).render('error', {
+            statusCode: '400',
+            errorMessage: err.message
+          }))
+        }).catch(err => res.status(400).render('error', {
+          statusCode: '400',
+          errorMessage: err.message
+        }))
+      })
+    }
+  })
+})
 
-// // DELETE /users/:id
-// router.delete('/users/delete', auth, (req, res) => {
-//   const { token } = req.cookies
+// DELETE /users/:id
+router.delete('/users/delete', auth, (req, res) => {
+  const { token } = req.cookies
 
-//   verifyToken(token).then((id) => {
-//     User.findByIdAndDelete(id).then((user) => {
+  verifyToken(token).then((id) => {
+    User.findByIdAndDelete(id).then((user) => {
 
-//       if (user) {
-//         res.clearCookie('token').redirect('/')
-//       } else {
-//         res.status(404).render('error', {
-//           statusCode: '404',
-//           errorMessage: 'Sorry, we could not find that user in our database.'
-//         })
-//       }
-//     })
-//   })
-// })
+      if (user) {
+        res.clearCookie('token').redirect('/')
+      } else {
+        res.status(404).render('error', {
+          statusCode: '404',
+          errorMessage: 'Sorry, we could not find that user in our database.'
+        })
+      }
+    })
+  })
+})
 
 module.exports = router
