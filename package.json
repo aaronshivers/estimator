@@ -35,6 +35,6 @@
   "devDependencies": {
     "expect": "^23.6.0",
     "mocha": "^5.2.0",
-    "supertest": "^3.4.1"
+    "supertest": "^3.4.2"
   }
 }
