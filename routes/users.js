@@ -112,10 +112,10 @@ router.post('/users/login', async (req, res) => {
     const { email, password } = req.body
 
     // find user by email
-    const existingUser = await User.findOne({ email })
+    const user = await User.findOne({ email })
 
     // reject if user already exists
-    if (!existingUser) return res.status(401).render('error', { msg: 'User Not Found' })
+    if (!user) return res.status(401).render('error', { msg: 'User Not Found' })
 
     // verify user password
     const hash = await bcrypt.compare(password, user.password)

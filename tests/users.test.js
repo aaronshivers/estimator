@@ -97,6 +97,9 @@ describe('/users', () => {
         .send(`email=${ email }`)
         .send(`password=${ password }`)
         .expect(201)
+        .expect(res => {
+          expect(res.header['set-cookie']).toBeTruthy()
+        })
 
       const foundUser = await User.findOne({ email })
       expect(foundUser).toBeTruthy()
@@ -159,7 +162,7 @@ describe('/users', () => {
         .expect(401)
     })
 
-    it('should respond 200 if user is logged in', async () => {
+    it('should respond 302 and redirect to /calulator if user is logged in', async () => {
       const { email, password } = users[0]
 
       await request(app)
@@ -167,7 +170,11 @@ describe('/users', () => {
         .set('Cookie', `token=${ token }`)
         .send(`email=${ email }`)
         .send(`password=${ password }`)
-        .expect(200)
+        .expect(302)
+        .expect(res => {
+          expect(res.header.location).toEqual('/calculator')
+          expect(res.header['set-cookie']).toBeTruthy()
+        })        
     })
   })
 
