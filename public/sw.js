@@ -9,10 +9,10 @@ self.addEventListener('install', async event => {
       console.log(`[Service Worker] Pre-Caching App Shell`)
       cache.addAll([
         `/`,
-        `/login`,
-        `/signup`,
-        // `/js/script.js`,
-        // `/js/home-script.js`,
+        `/users/login`,
+        `/users/signup`,
+        `/js/script.js`,
+        `/js/navbar-script.js`,
         // `/js/promise.js`,
         // `/js/fetch.js`,
         // `/css/bootstrap.min.css`,
