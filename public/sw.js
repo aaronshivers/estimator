@@ -14,10 +14,10 @@ self.addEventListener('install', async event => {
         `/js/script.js`,
         `/js/navbar-script.js`,
         `/css/bootstrap.min.css`,
-        // `https://code.jquery.com/jquery-3.3.1.slim.min.js`,
-        // `https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js`,
-        // `https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js`,
-        // `https://fonts.googleapis.com/css?family=Lato:400,700,400italic`
+        `https://code.jquery.com/jquery-3.3.1.slim.min.js`,
+        `https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js`,
+        `https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js`,
+        `https://fonts.googleapis.com/css?family=Nunito+Sans:400,600`
       ])
     }
   } catch (error) {
