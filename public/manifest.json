@@ -12,7 +12,7 @@
     }
   ],
   "scope": ".",
-  "start_url": "https://todo.aaronshivers.com/",
+  "start_url": "https://estimator.aaronshivers.com/",
   "background_color": "#1a1a1a",
   "display": "standalone",
   "theme_color": "#1a1a1a"

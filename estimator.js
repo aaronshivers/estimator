@@ -1,4 +1,4 @@
-process.env.NODE_ENV === 'development' ? null : require('dotenv').config()
+require('dotenv').config()
 
 const express = require('express')
 const helmet = require('helmet')
@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser')
 const compression = require('compression')
 
 const app = express()
-const { PORT } = process.env
+const { PORT, NODE_ENV } = process.env
 
 const indexRoutes = require('./routes/index')
 const userRoutes = require('./routes/users')
@@ -35,6 +35,9 @@ app.use((error, req, res, next) => {
   res.status(500).render('error', { msg: 'Server Error' })
 })
 
-app.listen(PORT, () => console.log(`Server listening on port ${ PORT }.`))
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${ PORT }.`)
+  console.log(`Environment set to: ${ NODE_ENV }.`)
+})
 
 module.exports = app
