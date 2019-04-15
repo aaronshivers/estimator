@@ -42,20 +42,3 @@ self.addEventListener('activate', async event => {
     console.log(error.message)
   }
 })
-
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(resp => {
-      return resp || fetch(event.request).then(response => {
-        return caches.open(CACHE_DYNAMIC_NAME).then(cache => {
-          cache.put(event.request.url, response.clone())
-          return response
-        })
-      })
-    }).catch(() => {
-      return caches.open(CACHE_STATIC_NAME).then(cache => {
-        return caches.match(event.request)
-      })
-    })
-  )
-})
