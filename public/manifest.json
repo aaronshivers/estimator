@@ -1,0 +1,19 @@
+{
+  "short_name": "Estimator",
+  "name": "Estimator",
+  "icons": [
+    {
+      "src": "/img/android-chrome-192x192.png",
+      "sizes": "192x192","type": "image/png"
+    }, {
+      "src": "/img/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "scope": ".",
+  "start_url": "https://todo.aaronshivers.com/",
+  "background_color": "#1a1a1a",
+  "display": "standalone",
+  "theme_color": "#1a1a1a"
+}
